@@ -174,7 +174,8 @@ def rgb_to_ycbcr(image: np.ndarray) -> np.ndarray:
     bias = np.array([0, 128, 128])
 
     ycbcr_image = image @ transform_matrix.T + bias
-    return np.astype(ycbcr_image, np.uint8)
+
+    return np.clip(ycbcr_image, 0, 255).astype(np.uint8)
 
 
 def ycbcr_to_rgb(image: np.ndarray) -> np.ndarray:
@@ -202,7 +203,7 @@ def ycbcr_to_rgb(image: np.ndarray) -> np.ndarray:
     )
     bias = np.array([0, 128, 128])
 
-    ycbcr_image = image - bias
+    ycbcr_image = image.astype(np.float32) - bias
     rgb_image = ycbcr_image @ itransform_matrix.T
 
-    return np.astype(rgb_image, np.uint8)
+    return np.clip(rgb_image, 0, 255).astype(np.uint8)

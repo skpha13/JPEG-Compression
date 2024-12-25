@@ -24,7 +24,7 @@ def compress_rgb_image() -> None:
     axs[1].axis("off")
 
     mse = mean_squared_error(image, compressed_image)
-    print(f"Mean Squared Error: {mse}")
+    print(f"Mean Squared Error: {mse:.4f}")
 
     save_fig(fig, plot_name)
     plt.show()
