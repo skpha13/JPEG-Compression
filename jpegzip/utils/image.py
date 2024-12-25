@@ -21,7 +21,7 @@ class ImageBlockProcessor:
         -------
         np.ndarray
             A 2D NumPy array representing the padded image with dimensions
-            that are multiples of 8 in both height and width.
+            that are multiples of BLOCK_SIZE in both height and width.
 
         Notes
         -----
