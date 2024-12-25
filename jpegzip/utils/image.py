@@ -146,3 +146,63 @@ class ImageBlockProcessor:
         reconstructed_image = np.concatenate(reconstructed_rows, axis=0)
 
         return reconstructed_image
+
+
+def rgb_to_ycbcr(image: np.ndarray) -> np.ndarray:
+    """Convert an RGB image to YCbCr color space.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        A numpy array of shape (H, W, 3) representing an RGB image.
+        Each pixel is a 3-element array with red, green, and blue components.
+
+    Returns
+    -------
+    np.ndarray
+        A numpy array of shape (H, W, 3) representing the corresponding YCbCr image.
+        Each pixel is a 3-element array with Y, Cb, and Cr components.
+    """
+
+    transform_matrix = np.array(
+        [
+            [0.299, 0.587, 0.114],
+            [-0.168736, -0.331264, 0.5],
+            [0.5, -0.418688, -0.081312],
+        ]
+    )
+    bias = np.array([0, 128, 128])
+
+    ycbcr_image = image @ transform_matrix.T + bias
+    return np.astype(ycbcr_image, np.uint8)
+
+
+def ycbcr_to_rgb(image: np.ndarray) -> np.ndarray:
+    """Convert a YCbCr image to RGB color space.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        A numpy array of shape (H, W, 3) representing a YCbCr image.
+        Each pixel is a 3-element array with Y, Cb, and Cr components.
+
+    Returns
+    -------
+    np.ndarray
+        A numpy array of shape (H, W, 3) representing the corresponding RGB image.
+        Each pixel is a 3-element array with red, green, and blue components.
+    """
+
+    itransform_matrix = np.array(
+        [
+            [1, 0, 1.402],
+            [1, -0.344136, -0.714136],
+            [1, 1.772, 0],
+        ]
+    )
+    bias = np.array([0, 128, 128])
+
+    ycbcr_image = image - bias
+    rgb_image = ycbcr_image @ itransform_matrix.T
+
+    return np.astype(rgb_image, np.uint8)
