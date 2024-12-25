@@ -1,5 +1,5 @@
 import scipy
-from jpegzip.algorithms.jpeg_compression import JPEGCompression
+from jpegzip.compression.jpeg_compression import JPEGCompression
 from matplotlib import pyplot as plt
 
 image = scipy.datasets.ascent()
