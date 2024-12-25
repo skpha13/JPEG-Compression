@@ -106,7 +106,7 @@ class ImageBlockProcessor:
         image_copy = image.copy()
         # split rows in segments of size BLOCK_SIZE
         image_sliced = np.split(image_copy, n_row_split, axis=0)
-        # split the resulting rows in columns of size BLOCK_SIZE, thus resulting in an array of shape: (n_row_split, n_row_col, BLOCK_SIZE, BLOCK_SIZE)
+        # split the resulting rows in columns of size BLOCK_SIZE, thus resulting in an array of shape: (n_row_split, n_col_split, BLOCK_SIZE, BLOCK_SIZE)
         image_blocks = np.array([np.split(img_slice, n_col_split, axis=1) for img_slice in image_sliced])
 
         return image_blocks

@@ -4,8 +4,8 @@ from jpegzip.utils.image import ImageBlockProcessor
 
 
 class TestIBlock:
-    def test_iblocks_reconstruction_simple(self):
-        """Test reconstruction of a simple 16x16 image"""
+    def test_iblocks_reconstruction_16x16(self):
+        """Test reconstruction of a 16x16 image"""
 
         image = np.arange(256).reshape(16, 16)
         blocks = ImageBlockProcessor.blocks(image)
