@@ -5,8 +5,8 @@ import cv2 as cv
 import numpy as np
 
 logger = logging.getLogger(__name__)
-BASE_INPUT_DIR = os.path.join(os.getcwd(), "..", "input")
-BASE_OUTPUT_DIR = os.path.join(os.getcwd(), "..", "output")
+BASE_INPUT_DIR = os.path.join(os.getcwd(), "input")
+BASE_OUTPUT_DIR = os.path.join(os.getcwd(), "output")
 
 
 def load_image(name: str) -> np.ndarray:
