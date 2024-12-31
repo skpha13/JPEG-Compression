@@ -1,7 +1,7 @@
 [project]
 
 name = "jpegzip"
-version = "0.0.1"
+version = "1.0.0"
 authors = [
   { name="Adrian Mincu", email="mincu.adrian13@gmail.com" },
 ]
