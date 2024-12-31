@@ -21,7 +21,8 @@ dependencies = [
     'scipy~=1.14',
     'matplotlib~=3.9',
     'pooch~=1.8',
-    'scikit-image~=0.25'
+    'scikit-image~=0.25',
+    'opencv-python~=4.10'
 ]
 
 [project.optional-dependencies]
@@ -46,3 +47,6 @@ Issues = "https://github.com/skpha13/JPEG-Compression/issues"
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = { find = { where = ["jpegzip"] } }
