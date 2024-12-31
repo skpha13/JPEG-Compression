@@ -53,7 +53,9 @@ class JPEGCompression:
     Q_DOWNSAMPLING: int = 10
 
     @staticmethod
-    def encode(image: np.ndarray, q_method: Literal["luminance", "chroma"] = "luminance") -> np.ndarray:
+    def encode(
+        image: np.ndarray, q_method: Literal["luminance", "chroma"] = "luminance", q_factor: float = 1.0
+    ) -> np.ndarray:
         """Compresses an input image using JPEG-like encoding.
 
         The process includes downsampling, centering pixel values to zero, block-wise DCT,
@@ -75,6 +77,14 @@ class JPEGCompression:
 
             The default is "luminance".
 
+        q_factor : float, optional
+            A scaling factor for the quantization matrix used in JPEG compression.
+
+            Higher values of `q_factor` will result in greater compression by increasing
+            the quantization step sizes, which may lead to more loss in image quality.
+            Conversely, lower values reduce the compression and preserve more image
+            details. The default value is 1.
+
         Returns
         -------
         np.ndarray
@@ -86,6 +96,8 @@ class JPEGCompression:
             Q = JPEGCompression.Q_LUMINANCE
         elif q_method == "chroma":
             Q = JPEGCompression.Q_CHROMA
+        Q = np.astype(np.array(Q), np.float32)
+        Q = q_factor * Q
 
         x = image.copy()
 
