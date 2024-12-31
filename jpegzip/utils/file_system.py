@@ -66,3 +66,50 @@ def save_image(image: np.ndarray, name: str) -> None:
     except Exception as e:
         logger.error(f"Error writing image with path {path}: {e}")
         raise
+
+
+def load_video(name: str) -> tuple[np.ndarray, float]:
+    """Load a video file, extract all frames in RGB format, and return them along with the video FPS.
+
+    Parameters
+    ----------
+    name : str
+        The name of the video file to load. The path will be constructed using the `BASE_INPUT_DIR` directory.
+
+    Returns
+    -------
+    tuple
+        A tuple containing:
+        - `frames_array` : numpy.ndarray
+            A 4D NumPy array of shape `(num_frames, height, width, 3)` where each frame is an RGB image.
+        - `fps` : float
+            The frames per second (FPS) of the video.
+
+    Raises
+    ------
+    SystemExit
+        If the video cannot be opened, the function will log an error and exit the program.
+    """
+
+    path = os.path.join(BASE_INPUT_DIR, name)
+    video = cv.VideoCapture(path)
+    fps = video.get(cv.CAP_PROP_FPS)
+
+    if not video.isOpened():
+        logger.error(f"Error loading video with path: {path}")
+        exit()
+
+    frames = []
+    while True:
+        ret, frame = video.read()
+
+        if not ret:
+            break
+
+        rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+        frames.append(rgb_frame)
+
+    video.release()
+
+    frames_array = np.array(frames)
+    return frames_array, fps
