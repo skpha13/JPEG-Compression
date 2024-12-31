@@ -7,6 +7,7 @@ import numpy as np
 import scipy
 from skimage.metrics import mean_squared_error
 
+from compression.video_compression import VideoCompression
 from jpegzip.compression.image_compression import ImageCompression
 from jpegzip.utils.plots import plot_compression
 from utils.file_system import load_image, save_image
@@ -43,6 +44,13 @@ def compress_to_target_mse(target_mse: float | None = None, image: Optional[np.n
     return compressed_image
 
 
+def compress_video() -> None:
+    compressor = VideoCompression("sample_video.mp4")
+    average_mse = compressor.compress()
+
+    logger.info(f" Average MSE: {average_mse:3.4f}")
+
+
 def add_arguments(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument("--load", type=str, help="Name of the image to load for compression from folder `input`.")
 
@@ -54,6 +62,9 @@ def add_arguments(parser: ArgumentParser) -> ArgumentParser:
     )
     compress_to_target_mse_parser.add_argument(
         "--target-mse", type=float, required=True, help="Target MSE for the compression."
+    )
+    subparsers.add_parser(
+        "compress-video", help="Compress the `sample_video.mp4` located inside the `input` directory."
     )
 
     return parser
@@ -74,6 +85,9 @@ def main() -> None:
         compressed_image = compress(image)
     elif args.operation == "compress-to-target-mse":
         compressed_image = compress_to_target_mse(args.target_mse, image)
+    elif args.operation == "compress-video":
+        compress_video()
+        return
 
     image_name = None
     if args.load:
