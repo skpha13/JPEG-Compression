@@ -117,7 +117,7 @@ class JPEGCompression:
         return y
 
     @staticmethod
-    def decode(image: np.ndarray) -> np.ndarray:
+    def decode(image: np.ndarray, shape: tuple[int, ...] | None = None) -> np.ndarray:
         """Decompresses an encoded image using JPEG-like decoding.
 
         The process includes block-wise IDCT, dequantization, and re-centering pixel values
@@ -128,6 +128,10 @@ class JPEGCompression:
         image : np.ndarray
             Encoded image represented as a 2D numpy array,
             containing quantized DCT coefficients.
+
+        shape :  (tuple[int, int]), Optional
+            The desired shape (width, height) to crop the decoded image to.
+            If set to None it will not crop the image.
 
         Returns
         -------
@@ -143,4 +147,14 @@ class JPEGCompression:
 
         y = ImageBlockProcessor.iblocks(y_idctn_blocks)
 
-        return y
+        if shape is None:
+            return y
+
+        height, width = image.shape
+        desired_height, desired_width = shape
+        height_crop = (height - desired_height) // 2
+        width_crop = (width - desired_width) // 2
+
+        y_cropped = y[height_crop : height_crop + desired_height, width_crop : width_crop + desired_width]
+
+        return y_cropped

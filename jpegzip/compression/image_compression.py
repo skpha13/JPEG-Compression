@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 
 class ImageCompression:
     MSE_TOLERANCE: float = 10.0
-    MAX_ITERATIONS: int = 15
+    MAX_ITERATIONS: int = 30
+    FACTOR_RATE: float = 0.5
 
     @staticmethod
     def compress_rgb(image: np.ndarray, q_factor: float = 1.0) -> np.ndarray:
@@ -59,9 +60,9 @@ class ImageCompression:
         cr_channel = image_ycbcr[:, :, 2] if image.ndim == 3 else None
 
         # fmt: off
-        y_channel_compressed = JPEGCompression.decode(JPEGCompression.encode(y_channel, q_method="luminance", q_factor=q_factor))
-        cb_channel_compressed = JPEGCompression.decode(JPEGCompression.encode(cb_channel, q_method="chroma", q_factor=q_factor)) if cb_channel is not None else None
-        cr_channel_compressed = JPEGCompression.decode(JPEGCompression.encode(cr_channel, q_method="chroma", q_factor=q_factor)) if cr_channel is not None else None
+        y_channel_compressed = JPEGCompression.decode(JPEGCompression.encode(y_channel, q_method="luminance", q_factor=q_factor), y_channel.shape)
+        cb_channel_compressed = JPEGCompression.decode(JPEGCompression.encode(cb_channel, q_method="chroma", q_factor=q_factor), cb_channel.shape) if cb_channel is not None else None
+        cr_channel_compressed = JPEGCompression.decode(JPEGCompression.encode(cr_channel, q_method="chroma", q_factor=q_factor), cr_channel.shape) if cr_channel is not None else None
         # fmt: on
 
         if image.ndim == 3:
@@ -111,8 +112,11 @@ class ImageCompression:
             compressed_image = ImageCompression.compress_rgb(image, q_factor=q_factor)
             mse = mean_squared_error(image, compressed_image)
 
-            logger.info(f" q_factor: {q_factor:10.4f}, mse: {mse:10.4f}")
-            q_factor: float = (q_factor * target_mse) / mse
+            logger.info(f" iteration: {iteration:2}, q_factor: {q_factor:10.4f}, mse: {mse:10.4f}")
+
+            q_factor_new: float = (q_factor * target_mse) / mse
+            step: float = q_factor_new - q_factor
+            q_factor = q_factor + step * ImageCompression.FACTOR_RATE
 
             if iteration > ImageCompression.MAX_ITERATIONS:
                 raise RuntimeError(
