@@ -53,7 +53,7 @@ python -m jpegzip.main --load sample_image.png
 To compress an image immediately after loading:
 
 ```bash
-python -m jpegzip.main --load_sample.png compress
+python -m jpegzip.main --load sample_image.png compress
 ```
 
 ### Compressing the Default Image
