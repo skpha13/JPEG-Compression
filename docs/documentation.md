@@ -21,12 +21,13 @@ This package provides a simple and intuitive CLI for compressing images.
 
 ### Summary of Key Commands
 
-| Command                                       | Description                                                         |
-|-----------------------------------------------|---------------------------------------------------------------------|
-| `-h`                                          | Displays help information.                                          |
-| `--load <image_name>`                         | Loads a custom image for compression from the `input` directory.    |
-| `compress`                                    | Compresses the currently loaded image or the default raccoon image. |
-| `compress-to-target-mse --target-mse <value>` | Compresses the image to the specified target MSE.                   |
+| Command                                       | Description                                                                  |
+|-----------------------------------------------|------------------------------------------------------------------------------|
+| `-h`                                          | Displays help information.                                                   |
+| `--load <image_name>`                         | Loads a custom image for compression from the `input` directory.             |
+| `compress`                                    | Compresses the currently loaded image or the default raccoon image.          |
+| `compress-to-target-mse --target-mse <value>` | Compresses the image to the specified target MSE.                            |
+| `compress-video`                              | Compresses the video named `sample_video.mp4` inside the `input` directory.  |
 
 
 ### Help
@@ -85,6 +86,18 @@ To compress a custom image (`sample_image.png`) with a target MSE of 100:
 ```bash
 python -m jpegzip.main --load sample_image.png compress-to-target-mse --target-mse 100
 ```
+
+### Compressing a Video
+
+To compress the `sample_video.mp4` inside the `input` directory.
+
+```bash
+python -m jpegzip.main compress-video
+```
+
+> [!WARNING]
+> If you want to compress a custom video you will need to place it in the `input` directory
+and rename it to `sample_video.mp4`.
 
 ## Notes
 

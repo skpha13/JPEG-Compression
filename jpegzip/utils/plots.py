@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-os.makedirs(f"{os.getcwd()}/../plots", exist_ok=True)
+os.makedirs(f"{os.getcwd()}/plots", exist_ok=True)
 
 
 def save_fig(fig: plt.Figure, plot_name: str) -> None:
@@ -17,7 +17,7 @@ def save_fig(fig: plt.Figure, plot_name: str) -> None:
         The name of the file (without extension) where the figure will be saved.
     """
 
-    fig.savefig(fname=f"../plots/{plot_name}.png", format="png")
+    fig.savefig(fname=f"plots/{plot_name}.png", format="png")
 
 
 def plot_compression(plot_name: str, image: np.ndarray, compressed_image: np.ndarray) -> None:

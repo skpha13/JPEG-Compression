@@ -95,6 +95,10 @@ def main() -> None:
     else:
         image_name = "raccoon_compressed.png"
 
+    if compressed_image is None or compressed_image.size == 0:
+        logger.info("Failed to process image: The image is empty or None, and cannot be written.")
+        return
+
     save_image(compressed_image, image_name)
 
 
